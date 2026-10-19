@@ -1,0 +1,8 @@
+{
+    "intelephense.environment.includePaths": [
+        "www/bitrix/modules/crm/",
+        "www/bitrix/modules/main/"
+
+    ],
+    "php.version": "8.5"
+}

@@ -1,0 +1,9 @@
+{
+    "name": "mysite/i.chumakov",
+    "minimum-stability": "stable",
+    "authors": [
+        {
+            "name": "i.chumakov"
+        }
+    ]
+}
