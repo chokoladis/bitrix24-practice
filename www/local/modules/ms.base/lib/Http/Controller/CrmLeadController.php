@@ -8,6 +8,8 @@ use Bitrix\Main\Engine\ActionFilter\HttpMethod;
 use Bitrix\Main\Engine\Controller;
 use Bitrix\Main\Request;
 use Bitrix\Main\Validation\ValidationService;
+use Bitrix\Main\Web\Http\Response;
+use Bitrix\Main\Web\Json;
 use MS\Base\DTO\Crm\LeadCreateRequest;
 use MS\Base\Service\CrmLeadService;
 
@@ -45,7 +47,9 @@ class CrmLeadController extends Controller
             $parsed->get('name'),
             $parsed->get('phone'),
             $parsed->get('email'),
-            $parsed->get('utm_source')
+            $parsed->get('utm_source'),
+            $parsed->get('address'),
+            $parsed->get('comment')
         );
 
         $result = $this->validation->validate($data);
@@ -56,8 +60,8 @@ class CrmLeadController extends Controller
             return null;
         }
 
-        $response = json_decode($this->leadService->create($data), true);
+        $response = json_decode($this->leadService->checkExistsContactAndCreateLead($data), true);
 
-        return $response['result'] ?? '';
+        return $response['result']['result']['lead'] ?? '';
     }
 }

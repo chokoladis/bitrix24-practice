@@ -20,7 +20,9 @@ final readonly class LeadCreateRequest {
         public string $email,
         // todo enum?
         #[Length(4)]
-        public string $utm_source
+        public string $utm_source,
+        public ?string $address = null,
+        public ?string $comment = null
     )
     {
     }
