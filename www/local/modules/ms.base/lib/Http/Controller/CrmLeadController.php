@@ -53,7 +53,6 @@ class CrmLeadController extends Controller
         );
 
         $result = $this->validation->validate($data);
-        
         if (!$result->isSuccess())
         {
             $this->addErrors($result->getErrors());

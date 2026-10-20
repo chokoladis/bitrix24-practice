@@ -7,6 +7,7 @@ use Bitrix\Main\Validation\Rule\Length;
 use Bitrix\Main\Validation\Rule\NotEmpty;
 use Bitrix\Main\Validation\Rule\Phone;
 
+// todo проверку по длинне и кирилице
 final readonly class LeadCreateRequest {
     public function __construct(
         #[NotEmpty]
