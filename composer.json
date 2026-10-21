@@ -1,0 +1,26 @@
+{
+    "name": "mysite/i.chumakov",
+    "minimum-stability": "stable",
+    "authors": [
+        {
+            "name": "i.chumakov"
+        }
+    ],
+    "require": {
+        "symfony/console": "^7.4",
+        "vlucas/phpdotenv": "5.6.3",
+        "wikimedia/composer-merge-plugin": "dev-master"
+    },
+    "extra": {
+        "merge-plugin": {
+            "require": [
+                "www/bitrix/composer-bx.json"
+            ]
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "wikimedia/composer-merge-plugin": true
+        }
+    }
+}

@@ -6,4 +6,9 @@ return [
         'config' => ['api.php'],
       ]
   ],
+  'composer' => [
+    'value' => [
+        'config_path' => '../composer.json'
+    ]
+  ]
 ];
