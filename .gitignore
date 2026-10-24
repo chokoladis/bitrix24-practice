@@ -2,3 +2,5 @@
 www/*
 !/www/local/*
 vendor/*
+.idea
+composer.lock

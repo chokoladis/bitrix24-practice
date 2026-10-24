@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ms\Base\Command;
 
 use Bitrix\Main\ORM\Fields\ExpressionField;

@@ -1,4 +1,5 @@
 <?
+declare(strict_types=1);
 
 namespace Ms\Base\DTO\Crm;
 
@@ -15,7 +16,7 @@ final readonly class LeadCreateRequest {
         public string $name,
         #[NotEmpty]
         #[Phone]
-        public string $phone,
+        public int $phone,
         #[NotEmpty]
         #[Email]
         public string $email,
