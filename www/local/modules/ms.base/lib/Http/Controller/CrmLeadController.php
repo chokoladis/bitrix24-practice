@@ -10,24 +10,21 @@ use Bitrix\Main\Engine\ActionFilter\HttpMethod;
 use Bitrix\Main\Engine\Controller;
 use Bitrix\Main\Error;
 use Bitrix\Main\Request;
+use Bitrix\Main\Type\ParameterDictionary;
 use Bitrix\Main\Validation\ValidationService;
-use Bitrix\Main\Web\Http\Response;
-use Bitrix\Main\Web\Json;
 use MS\Base\DTO\Crm\LeadCreateRequest;
 use Ms\Base\Message\CreateLeadMessage;
-use MS\Base\Service\CrmLeadService;
 
 class CrmLeadController extends Controller
 {
-    private ValidationService $validation;
-    private CrmLeadService $leadService;
-
-    public function __construct(?Request $request = null)
+    public function __construct(
+        ?Request $request = null,
+        private ?ValidationService $validation = null,
+    )
     {
         parent::__construct($request);
 
-        $this->validation = ServiceLocator::getInstance()->get('main.validation.service');
-        $this->leadService = new CrmLeadService();
+        $this->validation ??= ServiceLocator::getInstance()->get('main.validation.service');
     }
 
     public function configureActions()
@@ -45,31 +42,15 @@ class CrmLeadController extends Controller
 
     public function createAction(\Bitrix\Main\Engine\JsonPayload $json)
     {
-        $parsed = $json->getDataList();
-
         //todo защита от дублирования и множества запросов
         try {
-            $data = new LeadCreateRequest(
-                $parsed->get('name'),
-                (int)$parsed->get('phone'),
-                $parsed->get('email'),
-                $parsed->get('utm_source'),
-                $parsed->get('address'),
-                $parsed->get('comment')
-            );
-
-            $result = $this->validation->validate($data);
-            if (!$result->isSuccess()) {
-                $this->addErrors($result->getErrors());
-                return null;
-            }
+            $data = $this->validationCreate($json->getDataList());
 
             $GLOBALS['messageBus']->dispatch(new CreateLeadMessage($data));
         } catch (\InvalidArgumentException $e) {
             $this->addError(new Error('Передан не корректный тип данных'));
 
             \Bitrix\Main\Diag\Debug::writeToFile("[Error] crmLead controller validation - " . print_r([$e->getMessage(), $e->getFile(), $e->getLine()], true), "messenger.log");
-
         } catch (\Throwable $e) {
             $this->addError(new Error('Произошла непредвиденная ошибка'));
 
@@ -77,5 +58,25 @@ class CrmLeadController extends Controller
         }
 
         return null;
+    }
+
+    public function validationCreate(ParameterDictionary $parsed)
+    {
+        $data = new LeadCreateRequest(
+            $parsed->get('name'),
+            (int)$parsed->get('phone'),
+            $parsed->get('email'),
+            $parsed->get('utm_source'),
+            $parsed->get('address'),
+            $parsed->get('comment')
+        );
+
+        $result = $this->validation->validate($data);
+        if (!$result->isSuccess()) {
+            $this->addErrors($result->getErrors());
+            return null;
+        }
+
+        return $data;
     }
 }

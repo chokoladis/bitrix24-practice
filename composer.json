@@ -26,5 +26,11 @@
             "wikimedia/composer-merge-plugin": true,
             "composer/installers": true
         }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^13.4"
+    },
+    "scripts": {
+        "test": "phpunit --configuration www/local/tests/phpunit.xml"
     }
 }
